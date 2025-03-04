@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <img src="image\logo.png"
-    alt="image d'exemple" 
-    class="logo">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +12,7 @@
         <p>💡 Validez votre inscription et préparez-vous à transformer votre avenir grâce à l'E-commerce !</p>
 
         <form id="inscriptionForm">
-            <label for="name">Nom & Prénom</label>
+            <label for="name">Nom</label>
             <input type="text" id="name" name="name" required>
 
             <label for="phone">Numéro de Téléphone</label>
@@ -28,37 +25,38 @@
         </form>
 
         <p id="message" style="display:none; color: green; font-weight: bold;">✅ Inscription envoyée avec succès !</p>
+        <p id="errorMessage" style="display:none; color: red; font-weight: bold;">❌ Erreur lors de l'inscription !</p>
     </main>
 
     <script>
         document.getElementById("inscriptionForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
-            var formData = {
-                name: document.getElementById("name").value,
-                phone: document.getElementById("phone").value,
-                email: document.getElementById("email").value
-            };
+            var formData = new FormData();
+            formData.append("name", document.getElementById("name").value);
+            formData.append("phone", document.getElementById("phone").value);
+            formData.append("email", document.getElementById("email").value);
 
-            fetch("https://script.google.com/macros/s/AKfycbzwZa5GNZFMC6FzuepF4w_Vdp_AMTbQ5Gw5soZXpEA6SSHbODoet6QLFbhOStUFWvc/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbzMhpeA9rX_WyY2OkwxYmH_rXF2P9KrBcSkKzB6cE51jTgqiTzeNjCOAo-nATDqiG8M/exec", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
+                body: formData
             })
             .then(response => response.text())
             .then(data => {
                 console.log("Réponse du serveur :", data);
-                document.getElementById("message").style.display = "block";
-                localStorage.setItem("userName", formData.name);
-                localStorage.setItem("userPhone", formData.phone);
-                localStorage.setItem("userEmail", formData.email);
-                setTimeout(() => { window.location.href = "confirmation.html"; }, 2000);
+                if (data.includes("Données enregistrées avec succès")) {
+                    document.getElementById("message").style.display = "block";
+                    localStorage.setItem("userName", formData.get("name"));
+                    localStorage.setItem("userPhone", formData.get("phone"));
+                    localStorage.setItem("userEmail", formData.get("email"));
+                    setTimeout(() => { window.location.href = "confirmation.html"; }, 2000);
+                } else {
+                    document.getElementById("errorMessage").style.display = "block";
+                }
             })
             .catch(error => {
                 console.error("Erreur :", error);
-                alert("Erreur lors de l'inscription. Veuillez réessayer.");
+                document.getElementById("errorMessage").style.display = "block";
             });
         });
     </script>
