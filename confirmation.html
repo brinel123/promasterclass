@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <img src="image\logo.png"
+    alt="image d'exemple" 
+    class="logo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Confirmation - Masterclass</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Inscription Confirmée !</h1>
+
+        <div class="icon-container">
+            <span class="alert-icon"><img src="image\validation.png"</span>
+         
+        </div>
+        <p>🎉 Félicitations ! Tu es bien inscrit à la Masterclass. Un email de confirmation te sera envoyé sous peu. 📩</p>
+
+        <br>
+
+        <div class="orange-line3"></div>
+
+
+
+        <div class="icon-vip1">
+            <span class="alert-icon2"><img src="image\card.gif"</span>
+        </div>
+
+        <h2
+        class="titre-recompense">Accède au **VIP**</h2>
+        <p>
+            Si tu invites <strong class="texte-specifique">5 amis</strong> à suivre la Masterclass, nous t’offrons un <strong class="texte-specifique">pass VIP</strong> 🎟️  
+            Tu bénéficieras de <strong class="texte-specifique">10 produits gagnants</strong> 🔥 que nous avons testés et qui peuvent  
+            te permettre d'atteindre des <strong class="texte-specifique">chiffres incroyables !</strong> par mois  🚀
+        </p>
+
+        <br>
+
+        <h3>Nombre d'envois : <span id="counter">0</span>/5</h3>
+        <progress id="progressBar" value="0" max="5"></progress>
+
+        <br>
+
+        <a id="whatsappButton" href="#" class="cta">📤 Partager sur WhatsApp</a>
+
+        <br>
+
+        <a id="claimReward" href="recompense.html" class="cta" style="display: none;">🎁 RÉCLAMER MA RÉCOMPENSE</a>
+    </main>
+
+    <script>
+        let sendCount = localStorage.getItem("sendCount") ? parseInt(localStorage.getItem("sendCount")) : 0;
+        document.getElementById("counter").innerText = sendCount;
+        document.getElementById("progressBar").value = sendCount;
+
+        if (sendCount >= 5) {
+            document.getElementById("claimReward").style.display = "inline-block";
+        }
+
+        document.getElementById("whatsappButton").addEventListener("click", function(event) {
+            event.preventDefault();
+
+            var message = encodeURIComponent("![Image](E:\vip 2\image\e-commerce16.png)\n\n" + 
+                "🚀 Rejoins cette Masterclass exceptionnelle sur l'e-commerce en Afrique !\n\n" +
+                "Apprends comment générer des revenus en ligne avec 10 produits gagnants testés et approuvés. 💰🔥\n\n" +
+                "Inscris-toi ici 👉 https://brinel123.github.io/masterclassp/inscription.html");
+
+            var whatsappUrl = "https://api.whatsapp.com/send?text=" + message;
+            window.open(whatsappUrl, "_blank");
+
+            sendCount++;
+            localStorage.setItem("sendCount", sendCount);
+            document.getElementById("counter").innerText = sendCount;
+            document.getElementById("progressBar").value = sendCount;
+
+            if (sendCount >= 5) {
+                document.getElementById("claimReward").style.display = "inline-block";
+            }
+        });
+    </script>
+</body>
+</html>
